@@ -4,10 +4,10 @@ A note taking app with very basic features, made with flutter
 
 
 # Screenshots
-![](screenshots/1.png)
-![](screenshots/2.png)
-![](screenshots/3.png)
-![](screenshots/4.png)
-![](screenshots/5.png)
-![](screenshots/6.png)
-![](screenshots/7.png)
+<img src="screenshots/1.png" width="540" height="1140">
+<img src="screenshots/2.png" width="540" height="1140">
+<img src="screenshots/3.png" width="540" height="1140">
+<img src="screenshots/4.png" width="540" height="1140">
+<img src="screenshots/5.png" width="540" height="1140">
+<img src="screenshots/6.png" width="540" height="1140">
+<img src="screenshots/7.png" width="540" height="1140">
