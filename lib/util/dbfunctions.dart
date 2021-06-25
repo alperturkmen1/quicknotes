@@ -1,14 +1,13 @@
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path/path.dart';
-import 'notemodel.dart';
+import 'personmodel.dart';
 
 class DBUtil {
   Database _db;
-
   Future<Database> initDatabase() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'not.db');
+    String path = join(databasePath, 'people.db');
     return await openDatabase(
       path,
       version: 1,
@@ -18,7 +17,7 @@ class DBUtil {
 
   void onCreate(Database db, int version) async {
     await db.execute(
-      "CREATE TABLE notes2(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT)",
+      "CREATE TABLE persons(name TEXT, country TEXT)",
     );
   }
 
@@ -31,39 +30,40 @@ class DBUtil {
     }
   }
 
-  Future<int> create(Note note) async {
+  Future<int> create(Person person) async {
     var dbCheck = await db;
     return await dbCheck.rawInsert(
-        'INSERT INTO notes2(title, content) VALUES("${note.title}","${note.content}")');
+        "INSERT INTO persons(name, country) VALUES('${person.name}','${person.country}')");
   }
 
-  Future<Note> read(int id) async {
+  Future<Person> read(String name) async {
     var dbReady = await db;
-    var read = await dbReady.rawQuery("SELECT * FROM notes2 WHERE id='$id'");
-    return Note.fromMap(read[0]);
+    var read =
+        await dbReady.rawQuery("SELECT * FROM persons WHERE name='$name'");
+    return Person.fromMap(read[0]);
   }
 
-  Future<int> update(Note note) async {
+  Future<int> update(Person person) async {
     var dbReady = await db;
     return await dbReady.rawInsert(
-        'UPDATE notes2 SET title="${note.title}", content = "${note.content}" WHERE id="${note.id}"');
+        "UPDATE persons SET name='${person.name}', country = '${person.country}' WHERE name = '${person.name}' ");
   }
 
-  Future<int> delete(int id) async {
+  Future<int> delete(String name) async {
     var dbReady = await db;
-    return await dbReady.rawInsert("DELETE FROM notes2 WHERE id = '$id'");
+    return await dbReady.rawInsert("DELETE FROM persons WHERE name = '$name'");
   }
 
-  Future<List<Note>> readAll() async {
+  Future<List<Person>> readAll() async {
     var dbReady = await db;
-    List<Map> list = await dbReady.rawQuery("SELECT * FROM notes2");
-    List<Note> note = [];
+    List<Map> list = await dbReady.rawQuery("SELECT * FROM persons");
+    List<Person> person = [];
     for (int i = 0; i < list.length; i++) {
-      note.add(Note(
-          id: list[i]['id'],
-          title: list[i]['title'],
-          content: list[i]['content']));
+      person.add(Person(
+        list[i]['name'],
+        list[i]['country'],
+      ));
     }
-    return note;
+    return person;
   }
 }
